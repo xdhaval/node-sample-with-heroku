@@ -7,9 +7,9 @@ try {
         host: dbConfig.HOST,
         dialect: dbConfig.dialect,
         native: false,
-        ssl: false,
+        ssl: true,
         dialectOptions: {
-            ssl: false
+            ssl: true
         },
         pool: {
             max: dbConfig.pool.max,
