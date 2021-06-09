@@ -1,11 +1,26 @@
 const express = require('express')
+const bodyParser = require("body-parser");
+const cors = require("cors");
+
 const path = require('path')
 const PORT = process.env.PORT || 5000
 
-express()
+var corsOptions = {
+  origin: "*"
+};
+const db = require("./app/models");
+db.sequelize.sync();
+
+const app = express()
   .use(express.static(path.join(__dirname, 'public')))
+  .use(cors(corsOptions))
+  .use(bodyParser.json())
+  .use(bodyParser.urlencoded({ extended: true }))
   .set('views', path.join(__dirname, 'views'))
-  .set('view engine', 'ejs')
+  .set('view engine', 'ejs');
+
+require("./app/routes/index")(app);
+
+app
   .get('/', (req, res) => res.render('pages/index'))
-  .get('/db', (req, res) => res.render('pages/db', {'results': [{ name: 'abc', id: '1'}]}))
-  .listen(PORT, () => console.log(`Listening on ${ PORT }`))
+  .listen(PORT, () => console.log(`Listening on ${PORT}`))
