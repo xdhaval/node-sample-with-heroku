@@ -17,16 +17,17 @@ exports.create = (req, res) => {
         email: req.body.email,
         password: req.body.password
     };
-    console.log("user>>>>>>", user)
     // Save user in the database
     User.create(user)
         .then(data => {
-            res.send(data);
+            res.status(200).json(data);
         })
         .catch(err => {
             res.status(500).send({
+                data: null,
+                status: 500,
                 message:
-                    err.message || "Some error occurred while creating the User."
+                    err.message || "Some error occurred while retrieving users."
             });
         });
 };
@@ -37,10 +38,16 @@ exports.findAll = (req, res) => {
 
     User.findAll({ where: condition })
         .then(data => {
-            res.send(data);
+            res.status(200).json({
+                data: data,
+                status: 200,
+                message: null
+            });
         })
         .catch(err => {
             res.status(500).send({
+                data: null,
+                status: 500,
                 message:
                     err.message || "Some error occurred while retrieving users."
             });
