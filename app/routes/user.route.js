@@ -8,4 +8,7 @@ router.post("/", user.create);
 // Retrieve all users
 router.get("/", user.findAll);
 
+// Retrieve user
+router.get("/:id", user.findOne);
+
 module.exports = router;

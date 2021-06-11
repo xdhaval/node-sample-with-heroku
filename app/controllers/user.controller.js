@@ -53,3 +53,23 @@ exports.findAll = (req, res) => {
             });
         });
 };
+
+exports.findOne = (req, res) => {
+    const id = req.query.id;
+    User.findOne({ id: id })
+        .then(data => {
+            res.status(200).json({
+                data: data,
+                status: 200,
+                message: null
+            });
+        })
+        .catch(err => {
+            res.status(500).send({
+                data: null,
+                status: 500,
+                message:
+                    err.message || "Some error occurred while retrieving users."
+            });
+        });
+};
