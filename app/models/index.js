@@ -3,14 +3,16 @@ const dbConfig = require("../config/db.config.js");
 const Sequelize = require("sequelize");
 const db = {};
 try {
-    const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
+    const sequelize = new Sequelize(dbConfig.uri, {
         host: dbConfig.HOST,
         dialect: dbConfig.dialect,
         ssl: {
-            rejectUnauthorized: true
+            rejectUnauthorized: false
         },
         dialectOptions: {
-            ssl: true
+            ssl: {
+                rejectUnauthorized: false
+            }
         },
         pool: {
             max: dbConfig.pool.max,
