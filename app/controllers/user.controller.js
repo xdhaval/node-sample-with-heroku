@@ -21,11 +21,6 @@ exports.create = (req, res) => {
     // Save user in the database
     User.create(user)
         .then(async (data) => {
-            await Employee.create({
-                name: req.body.name,
-                email: req.body.email,
-                user_id: data.id
-            })
             res.status(200).json(data);
         })
         .catch(err => {
