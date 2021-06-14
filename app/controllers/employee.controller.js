@@ -1,11 +1,11 @@
 const db = require("../models");
-const User = db.users;
 const Employee = db.employees;
+const User = db.users;
 const Op = db.Sequelize.Op;
 
 exports.create = (req, res) => {
     // Validate request
-    if (!Boolean(req.body.name) || !Boolean(req.body.email) || !Boolean(req.body.password)) {
+    if (!Boolean(req.body.name) || !Boolean(req.body.email) || !Boolean(req.body.user_id)) {
         res.status(400).send({
             message: "All Fields are required!"
         });
@@ -16,16 +16,11 @@ exports.create = (req, res) => {
     const user = {
         name: req.body.name,
         email: req.body.email,
-        password: req.body.password
+        user_id: req.body.user_id
     };
     // Save user in the database
-    User.create(user)
+    Employee.create(user)
         .then(async (data) => {
-            await Employee.create({
-                name: req.body.name,
-                email: req.body.email,
-                user_id: data.id
-            })
             res.status(200).json(data);
         })
         .catch(err => {
@@ -42,7 +37,7 @@ exports.findAll = (req, res) => {
     const name = req.query.name;
 
     var condition = name ? { name: { [Op.iLike]: `%${name}%` } } : null;
-    User.findAll({ where: condition, include: [{ model: Employee }] })
+    Employee.findAll({ where: condition, include: [{ model: User }] })
         .then(data => {
             res.status(200).json({
                 data: data,
@@ -62,7 +57,7 @@ exports.findAll = (req, res) => {
 
 exports.findOne = (req, res) => {
     const id = req.query.id;
-    User.findOne({ id: id })
+    Employee.findOne({ id: id })
         .then(data => {
             res.status(200).json({
                 data: data,

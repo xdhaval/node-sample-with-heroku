@@ -21,10 +21,19 @@ try {
             idle: dbConfig.pool.idle
         }
     });
+    db.users = require("./user.model.js")(sequelize, Sequelize);
+    db.employees = require("./employee.model.js")(sequelize, Sequelize);
 
     db.Sequelize = Sequelize;
     db.sequelize = sequelize;
-    db.user = require("./user.model.js")(sequelize, Sequelize);
+
+    /** Associate The Relation */
+    Object.keys(db).forEach((modelName) => {
+        if (db[modelName].associate) {
+            db[modelName].associate(db);
+        }
+    });
+
 } catch (error) {
     console.error(error);
 }

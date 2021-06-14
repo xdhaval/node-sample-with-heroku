@@ -9,7 +9,11 @@ var corsOptions = {
   origin: "*"
 };
 const db = require("./app/models");
-db.sequelize.sync();
+(async () => {
+  await db.sequelize.sync({
+    force: false
+  }, () => console.log("[*] DB Sync complete"));
+})();
 
 const app = express()
   .use(express.static(path.join(__dirname, 'public')))
