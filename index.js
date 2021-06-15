@@ -8,12 +8,12 @@ const PORT = process.env.PORT || 5000
 var corsOptions = {
   origin: "*"
 };
-const db = require("./app/models");
-(async () => {
-  await db.sequelize.sync({
-    force: false
-  }, () => console.log("[*] DB Sync complete"));
-})();
+// const db = require("./app/models");
+// (async () => {
+//   await db.sequelize.sync({
+//     force: false
+//   }, () => console.log("[*] DB Sync complete"));
+// })();
 
 const app = express()
   .use(express.static(path.join(__dirname, 'public')))
@@ -23,7 +23,7 @@ const app = express()
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs');
 
-require("./app/routes/index")(app);
+require("./routes/index")(app);
 
 app
   .get('/', (req, res) => res.render('pages/index'))
